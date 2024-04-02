@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'agriculture_monitoring',
+    'rest_framework', #DRF
 ]
 
 MIDDLEWARE = [
