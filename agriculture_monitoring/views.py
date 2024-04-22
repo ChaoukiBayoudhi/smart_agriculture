@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from rest_framework import viewsets
-from .models import Crop,Pest,WeatherData,IrrigationSchedule
-from.serializers import CropSerializer,PestSerializer,weatherDataSerializer,IrrigationScheduleSerializer
+from .models import Crop,Pest,WeatherData,IrrigationSchedule,SoilMoisture,HarvestLog,Pesticide,CropHealth,CropPestControl
+from.serializers import CropSerializer,PestSerializer,weatherDataSerializer,IrrigationScheduleSerializer,SoilMoistureSerializer,HarvestLogSerializer,PesticideSerializer,CropHealthSerializer,CropPestControlSerializer
 
 # CRUD using viewsets.ModelViewSet
 #ModelViewwSet is a DRF class that defines the six methods:
@@ -27,3 +27,24 @@ class WeatherDataViewSet(viewsets.ModelViewSet):
 class IrregationSchedulerViewSet(viewsets.ModelViewSet):
     queryset=IrrigationSchedule.objects.all()
     serializer_class=IrrigationScheduleSerializer
+
+class SoilMoistureViewSet(viewsets.ModelViewSet):
+    queryset=SoilMoisture.objects.all()
+    serializer_class=SoilMoistureSerializer
+
+class HarvestLogViewSet(viewsets.ModelViewSet):
+    queryset=HarvestLog.objects.all()
+    serializer_class=HarvestLogSerializer
+
+class PesticideViewSet(viewsets.ModelViewSet):
+    queryset=Pesticide.objects.all()
+    serializer_class=PesticideSerializer
+
+class CropHealthViewSet(viewsets.ModelViewSet):
+    queryset=CropHealth.objects.all()
+    serializer_class=CropHealthSerializer
+
+class CropPestControlViewSet(viewsets.ModelViewSet):
+    queryset=CropPestControl.objects.all()
+    serializer_class=CropPestControlSerializer
+
