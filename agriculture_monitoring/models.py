@@ -100,7 +100,9 @@ class Pesticide(models.Model):
         verbose_name_plural='Pesticides'
     def __str__(self):
         return self.name
-
+#the CropPestControl model is the intermediate model (association table) for the ManyToMany relationship between Pest and Crop
+#it contains the control_date, control_measures, pesticide and the foreign keys of the Crop and Pest models
+#crop and pest are the foreign keys of the CropPestControl model that defines the composite primary key of the model
 class CropPestControl(models.Model):
     crop=models.ForeignKey(Crop,on_delete=models.CASCADE)
     pest=models.ForeignKey(Pest,on_delete=models.CASCADE)
@@ -109,6 +111,9 @@ class CropPestControl(models.Model):
     pesticide=models.ForeignKey(Pesticide,on_delete=models.SET_NULL,null=True,blank=True)
     class Meta:
         db_table='crop_pest_control'
+        #the composite primary key of the model is the combination of crop and pest
+        #the combination of crop and pest must be unique
+        unique_together = [('crop','pest')]
 
     def __str__(self):
         return f'{self.crop.name} - {self.pest.name} - {self.control_date}'
