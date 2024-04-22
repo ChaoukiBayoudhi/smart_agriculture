@@ -7,6 +7,8 @@ class MapLocalisation(models.Model):
         #it'll be used only on inheritance relationship
         abstract = True
 
+
+
 class Crop(MapLocalisation):
     name = models.CharField(max_length=100, unique=True)
     variety =models.CharField(max_length=100)
@@ -14,7 +16,7 @@ class Crop(MapLocalisation):
     expectedHarvestDate = models.DateField(null=True,blank=True)
     harvestDate = models.DateField()
     image=models.ImageField(upload_to='crops_images/',null=True,blank=True)
-    #the class Meta is an inner class that is used to define metadata on models, Serializers, Forms, 
+    #the class Meta is an inner class that is used to define metadata on models, Serializers, Forms,
     #this class must be just after the fields of the model
     #in this class we can define some properties of the model
     #like the ordering of records on the database table
@@ -38,7 +40,7 @@ class Crop(MapLocalisation):
         #return f'{self.name} - {self.plantingDate.year}'
         #return self.name,' - ',self.plantingDate.year.year
         return '%s - %d'%(self.name,self.plantingDate.year)
-    
+
 class WeatherData(MapLocalisation):
     timestamp=models.DateTimeField()
     temperature=models.FloatField(default=0)
@@ -59,7 +61,7 @@ class IrrigationSchedule(models.Model):
         db_table='irrigation_schedule'
     def __str__(self):
         return "id = ",self.id
-        
+
 class HealthStatus(models.TextChoices):
     Healthy='HLTY','healthy crop'
     Stressed='STSD','stressed crop'
@@ -75,7 +77,7 @@ class CropHealth(models.Model):
         db_table='crop_health'
     def __str__(self):
         return self.health_status
-    
+
 class Pest(models.Model):
     name=models.CharField(max_length=100,unique=True)
     description=models.TextField()
@@ -87,15 +89,49 @@ class Pest(models.Model):
     def __str__(self):
         return self.name
 
+class Pesticide(models.Model):
+    name=models.CharField(max_length=100,unique=True)
+    description=models.TextField()
+    usage_instructions=models.TextField()
+
+    class Meta:
+        db_table='pesticides'
+        verbose_name='Pesticide'
+        verbose_name_plural='Pesticides'
+    def __str__(self):
+        return self.name
+
 class CropPestControl(models.Model):
     crop=models.ForeignKey(Crop,on_delete=models.CASCADE)
     pest=models.ForeignKey(Pest,on_delete=models.CASCADE)
     control_date=models.DateField()
     control_measures=models.TextField()
+    pesticide=models.ForeignKey(Pesticide,on_delete=models.SET_NULL,null=True,blank=True)
     class Meta:
         db_table='crop_pest_control'
 
     def __str__(self):
         return f'{self.crop.name} - {self.pest.name} - {self.control_date}'
+
+class SoilMoisture(MapLocalisation):
+    sensor_id=models.AutoField(max_length=100,primary_key=True)
+    timestamp=models.DateTimeField()
+    moisture_reading=models.FloatField()
+
+    class Meta:
+        db_table='soil_moisture_data'
+    def __str__(self):
+        return f'{self.sensor_id} - {self.timestamp} - {self.moisture_reading}'
+
+class HarvestLog(models.Model):
+    crop=models.ForeignKey(Crop,on_delete=models.CASCADE)
+    timestamp=models.DateTimeField()
+    quantity=models.FloatField()
+    grade=models.CharField(max_length=100)
+    notes=models.TextField()
+    class Meta:
+        db_table='harvest_logs'
+    def __str__(self):
+        return f'{self.crop.name} - {self.timestamp} - {self.quantity} - {self.grade}'
 
 
