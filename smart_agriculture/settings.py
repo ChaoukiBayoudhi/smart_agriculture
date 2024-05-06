@@ -77,8 +77,13 @@ WSGI_APPLICATION = 'smart_agriculture.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'smart_agr_db',
+        'USER':'user01',#'postgres',
+        'PASSWORD':'user01',
+        'HOST':'127.0.0.1', # or 'localhost'
+        'PORT':5432
+
     }
 }
 

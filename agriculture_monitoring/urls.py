@@ -13,4 +13,6 @@ routes.register('harvestlog',HarvestLogViewSet)
 routes.register('croppestcontrol',CropPestControlViewSet)
 urlpatterns=[
     path('',include(routes.urls)),
+    path('cropsbefore/<int:year>',CropViewSet.as_view({'get':'get_crops_before'})),
+    path('crops-varity-planting/',CropViewSet.as_view({'get':'get_or_remove_crops_variety_plating','delete':'get_or_remove_crops_variety_plating'}))
 ]
